@@ -1,0 +1,14 @@
+# Ignore node_modules in both frontend and Backend
+frontend/node_modules/
+Backend/node_modules/
+
+# Ignore environment files
+frontend/.env
+Backend/.env
+
+# Ignore build folders
+frontend/build/
+Backend/build/
+
+# Ignore all node_modules at any level
+node_modules/
