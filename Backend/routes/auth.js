@@ -21,12 +21,12 @@ router.post(
       .withMessage("password must be 6 character"),
   ],
   async (req, res) => {
-    let result = validationResult(req);
-    if (!result.isEmpty()) {
-      res.status(400).json("validation err");
-    }
-    // Check weather the user with this email already exists
     try {
+      let result = validationResult(req);
+      if (!result.isEmpty()) {
+        return res.status(400).json("validation err");
+      }
+      // Check weather the user with this email already exists
       let user = await User.findOne({ email: req.body.email });
       if (user) {
         return res
