@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function Login({showAlert}) {
   const navigate = useNavigate();
   const [details, setDetails] = useState({ email: "", password: "" });
   const handleSubmit = async (e) => {
@@ -20,10 +20,11 @@ export default function Login() {
     if (result.succes) {
       localStorage.setItem("token", result.authToken);
       setDetails({ email: "", password: "" });
+      showAlert("Login successfully",'success');
       navigate("/");
     } else {
-      alert("please enter valid credential");
-      setDetails({ email: "", password: "" });
+      showAlert("please enter valid credential",'danger');
+      setDetails({ email: "", password: "" }); 
     }
   };
 
@@ -37,7 +38,7 @@ export default function Login() {
         className="card p-4 shadow-lg"
         style={{ width: "100%", maxWidth: "400px" }}
       >
-        <h4 className="text-center mb-4">Login</h4>
+        <h4 className="text-center mb-4">Login to iNotebook</h4>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">

@@ -24,30 +24,30 @@ router.post(
     try {
       let result = validationResult(req);
       if (!result.isEmpty()) {
-        return res.status(400).json("validation err");
+        return res.status(400).send({succes:false},"validation err");
       }
       // Check weather the user with this email already exists
       let user = await User.findOne({ email: req.body.email });
       if (user) {
         return res
           .status(400)
-          .send({ error: "user with this email is already existed" });
+          .send({succes:false, error: "user with this email is already existed" });
       }
       const salt = await bcrypt.genSalt(10);
       const secPass = await bcrypt.hash(req.body.password, salt);
 
       let data = { name: req.body.name };
-      const token = jwt.sign(data, Secrate_key);
+      const authToken = jwt.sign(data, Secrate_key);
       // Create a new user
       User.create({
         name: req.body.name,
         email: req.body.email,
         password: secPass,
       });
-      return res.status(200).send(token);
+      return res.status(200).send({succes:true,authToken});
     } catch (error) {
       console.error(error.message);
-      res.status(500).send("Internal server error");
+      res.status(500).send({succes:false},"Internal server error");
     }
   }
 );

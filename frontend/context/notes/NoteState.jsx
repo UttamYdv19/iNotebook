@@ -10,13 +10,12 @@ export default function NoteState(props) {
     const response = await fetch(`${host}/api/notes/fetchallnotes`, {
       method: "GET",
       headers: {
-        "content-type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjg2M2Q3MWVlYTY1NDg0MDJhOWU3MGRmIn0sImlhdCI6MTc1MTQzNTUzN30.Gt7tTUVowMqjreNnvNZtj1IT3ylMco6YuVoUfLaRwoQ",
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
       },
     });
-    const respose = await response.json();
-    setNotes(respose);
+    const result = await response.json();
+    setNotes(result);
   };
 
   // Add note
@@ -25,9 +24,8 @@ export default function NoteState(props) {
     const response = await fetch(`${host}/api/notes/addnotes/`, {
       method: "POST",
       headers: {
-        "content-type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjg2M2Q3MWVlYTY1NDg0MDJhOWU3MGRmIn0sImlhdCI6MTc1MTQzNTUzN30.Gt7tTUVowMqjreNnvNZtj1IT3ylMco6YuVoUfLaRwoQ",
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
       },
       body: JSON.stringify(note),
     });
@@ -41,9 +39,8 @@ export default function NoteState(props) {
     const response = await fetch(`${host}/api/notes/updatenotes/${data._id}`, {
       method: "PUT",
       headers: {
-        "content-type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjg2M2Q3MWVlYTY1NDg0MDJhOWU3MGRmIn0sImlhdCI6MTc1MTQzNTUzN30.Gt7tTUVowMqjreNnvNZtj1IT3ylMco6YuVoUfLaRwoQ",
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
       },
       body: JSON.stringify(data),
     });
@@ -61,17 +58,14 @@ export default function NoteState(props) {
     const response = await fetch(`${host}/api/notes/deletenotes/${id}`, {
       method: "DELETE",
       headers: {
-        "content-type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjg2M2Q3MWVlYTY1NDg0MDJhOWU3MGRmIn0sImlhdCI6MTc1MTQzNTUzN30.Gt7tTUVowMqjreNnvNZtj1IT3ylMco6YuVoUfLaRwoQ",
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
       },
     });
-    if(response.ok)
-      {
-        const result = await response.json();
-        setNotes((prevNotes)=>prevNotes.filter((note)=>note._id !== id ))
-      }
-  
+    if (response.ok) {
+      const result = await response.json();
+      setNotes((prevNotes) => prevNotes.filter((note) => note._id !== id));
+    }
   };
 
   return (

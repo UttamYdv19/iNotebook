@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
 import NoteContext from "../context/notes/NoteContext";
 
-export default function EditNote({ modalRef, note, setNote, closeRef }) {
-
+export default function EditNote({ modalRef, note, setNote, closeRef ,showAlert}) {
   const { editNote } = useContext(NoteContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     editNote(note);
+    showAlert("Note Updated Successfully", "success");
     closeRef.current.click();
   };
 
@@ -93,7 +93,13 @@ export default function EditNote({ modalRef, note, setNote, closeRef }) {
                   </select>
                 </div>
                 <div className="modal-footer">
-                  <button disabled={note.title.length<2 || note.description.length <5} type="submit" className="btn btn-primary">
+                  <button
+                    disabled={
+                      note.title.length < 2 || note.description.length < 5
+                    }
+                    type="submit"
+                    className="btn btn-primary"
+                  >
                     Update
                   </button>
                   <button
@@ -101,8 +107,9 @@ export default function EditNote({ modalRef, note, setNote, closeRef }) {
                     className="btn btn-secondary"
                     data-bs-dismiss="modal"
                     ref={closeRef}
-                    onClick={()=>setNote({ title: "", description: "", tag: "general" })}
-                    
+                    onClick={() =>
+                      setNote({ title: "", description: "", tag: "general" })
+                    }
                   >
                     Close
                   </button>

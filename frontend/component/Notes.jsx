@@ -3,13 +3,21 @@ import NoteContext from "../context/notes/NoteContext";
 import NoteItem from "./NoteItem";
 import AddNote from "./AddNote";
 import EditNote from "./EditNote";
-export default function Notes() {
+import { useNavigate } from "react-router-dom";
+export default function Notes({ showAlert }) {
   const { notes, getNote } = useContext(NoteContext);
   const [note, setNote] = useState({ title: "", description: "", tag: "" });
   const modalRef = useRef(null);
   const closeRef = useRef(null);
+  const navigate  =  useNavigate();
   useEffect(() => {
-    getNote();
+    if(localStorage.getItem('token'))
+      {
+        getNote();
+      }
+      else{
+        navigate('/login')
+      }
   }, []);
   const updateNote = (currentNote) => {
     modalRef.current.click();
@@ -17,12 +25,13 @@ export default function Notes() {
   };
   return (
     <>
-      <AddNote note={note} setNote={setNote} />
+      <AddNote note={note} setNote={setNote} showAlert={showAlert} />
       <EditNote
         modalRef={modalRef}
         note={note}
         setNote={setNote}
         closeRef={closeRef}
+        showAlert={showAlert}
       />
       <div className="row">
         {" "}
@@ -32,7 +41,7 @@ export default function Notes() {
           </div>
         ) : (
           notes.map((note) => (
-            <NoteItem note={note} key={note._id} updateNote={updateNote} />
+            <NoteItem note={note} key={note._id} updateNote={updateNote}  showAlert={showAlert}/>
           ))
         )}
       </div>
