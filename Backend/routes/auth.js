@@ -57,12 +57,13 @@ router.post(
   "/login",
   [
     body("email").isEmail().withMessage("please enter valid email"),
-    body("password").exists().withMessage("password can not be blank"),
+    body("password") .isLength({ min: 3 }).withMessage("password can not be blank"),
   ],
-  async (req, res) => {
+   async(req, res) => {
+    let succes = false;
     let result = await validationResult(req);
     if (!result.isEmpty()) {
-      res.status(400).json("validation err");
+      res.status(400).json(succes,"validation err");
     }
     let { email, password } = req.body;
     try {
@@ -76,11 +77,11 @@ router.post(
 
         const data = { user: { id: user.id } };
         const authToken = jwt.sign(data, Secrate_key);
-        res.status(200).send(authToken);
+        res.status(200).send({succes:true,authToken});
       }
     } catch (error) {
       console.error(error.message);
-      res.status(500).send("Internal server error");
+      res.status(500).send(succes,"Internal server error");
     }
   }
 );
