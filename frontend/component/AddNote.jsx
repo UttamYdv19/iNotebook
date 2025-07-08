@@ -13,11 +13,12 @@ export default function AddNote({note,setNote,showAlert}) {
     setNote({ ...note, [e.target.name]: e.target.value });
   };
   return (
-    <div className="container my-4">
-      <h2>Add a Note</h2>
-      <form className="my-m" onSubmit={handleSubmit}>
+    <div className="container d-flex justify-content-center align-items-center my-5">
+    <div className="card shadow p-4 w-100" style={{ maxWidth: "600px" }}>
+      <h3 className="text-center mb-4 text-primary">Add a New Note</h3>
+      <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label htmlFor="title" className="form-label">
+          <label htmlFor="title" className="form-label fw-semibold">
             Title
           </label>
           <input
@@ -29,25 +30,27 @@ export default function AddNote({note,setNote,showAlert}) {
             value={note.title}
             minLength={2}
             required
+            placeholder="Enter note title"
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="description" className="form-label">
+          <label htmlFor="description" className="form-label fw-semibold">
             Description
           </label>
-          <input
-            type="text"
+          <textarea
             className="form-control"
             id="description"
             name="description"
+            rows="3"
             onChange={onChange}
             value={note.description}
             minLength={5}
             required
-          />
+            placeholder="Enter note description"
+          ></textarea>
         </div>
-        <div className="mb-3">
-          <label htmlFor="tag" className="form-label">
+        <div className="mb-4">
+          <label htmlFor="tag" className="form-label fw-semibold">
             Tag
           </label>
           <select
@@ -63,10 +66,18 @@ export default function AddNote({note,setNote,showAlert}) {
             <option value="study">Study</option>
           </select>
         </div>
-        <button disabled={note.title.length<2 || note.description.length <5} type="submit" className="btn btn-primary">
-          Submit
-        </button>
+        <div className="text-center">
+          <button
+            type="submit"
+            className="btn btn-primary px-4"
+            disabled={note.title.length < 2 || note.description.length < 5}
+          >
+            Submit Note
+          </button>
+        </div>
       </form>
     </div>
+  </div>
+  
   );
 }
