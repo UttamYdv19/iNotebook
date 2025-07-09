@@ -4,11 +4,13 @@ const fetchuser = require("../middleware/fetchuser");
 const Notes = require("../modules/Notes");
 const { body, validationResult } = require("express-validator");
 
+
 // ROUTE1 : Get all the Notes Using: GET "api/notes/fetchallnotes" . Login required
 router.get("/fetchallnotes", fetchuser, async (req, res) => {
   const notes = await Notes.find({ user: req.user.id });
   res.json(notes);
 });
+
 
 // ROUTE2 :  Add Note Using: POST "api/notes/addnotes" . Login required
 router.post(
@@ -41,6 +43,7 @@ router.post(
     }
   }
 );
+
 
 // ROUTE3 :  Update a Note Using: PUT "api/notes/updatenotes" . Login required
 router.put(
@@ -87,6 +90,7 @@ router.put(
   }
 );
 
+
 // ROUTE4 :  delete a Note Using: Delete "api/notes/deletenotes" . Login required
 router.delete("/deletenotes/:id", fetchuser, async (req, res) => {
   try {
@@ -110,5 +114,6 @@ router.delete("/deletenotes/:id", fetchuser, async (req, res) => {
     return res.status(500).send("Internal server error");
   }
 });
+
 
 module.exports = router;

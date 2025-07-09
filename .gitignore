@@ -12,3 +12,4 @@ Backend/build/
 
 # Ignore all node_modules at any level
 node_modules/
+.vercel

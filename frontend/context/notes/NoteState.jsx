@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import NoteContext from "./NoteContext";
+
 export default function NoteState(props) {
-  const host = "http://localhost:5000";
+
+  const host = import.meta.env.VITE_API_URL;
   const [notes, setNotes] = useState([]);
+
 
   // Get All note
   const getNote = async () => {
@@ -11,12 +14,13 @@ export default function NoteState(props) {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "auth-token": localStorage.getItem("token"),
+        "auth-token": localStorage.getItem('token'),
       },
     });
     const result = await response.json();
     setNotes(result);
   };
+
 
   // Add note
   const addNote = async (note) => {
@@ -32,6 +36,7 @@ export default function NoteState(props) {
     const addedNote = await response.json();
     setNotes((notes) => [...notes, addedNote]);
   };
+
 
   // Edit note
   const editNote = async (data) => {
@@ -52,6 +57,7 @@ export default function NoteState(props) {
     );
   };
 
+
   // Delete note
   const deleteNote = async (id) => {
     //API Call
@@ -68,6 +74,7 @@ export default function NoteState(props) {
     }
   };
 
+  
   return (
     <NoteContext.Provider
       value={{ notes, addNote, editNote, deleteNote, getNote }}

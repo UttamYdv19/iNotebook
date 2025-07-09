@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Login({showAlert}) {
+export default function Login({ showAlert }) {
+  const host = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
   const [details, setDetails] = useState({ email: "", password: "" });
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch(`http://localhost:5000/api/auth/login`, {
+    const response = await fetch(`${host}/api/auth/login`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -20,11 +21,11 @@ export default function Login({showAlert}) {
     if (result.succes) {
       localStorage.setItem("token", result.authToken);
       setDetails({ email: "", password: "" });
-      showAlert("Login successfully",'success');
+      showAlert("Login successfully", "success");
       navigate("/");
     } else {
-      showAlert("please enter valid credential",'danger');
-      setDetails({ email: "", password: "" }); 
+      showAlert("please enter valid credential", "danger");
+      setDetails({ email: "", password: "" });
     }
   };
 

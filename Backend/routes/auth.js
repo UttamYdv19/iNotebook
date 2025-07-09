@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require("express");
 const User = require("../modules/User");
 const bcrypt = require("bcrypt");
@@ -6,7 +7,8 @@ const fetchuser = require("../middleware/fetchuser");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
 
-const Secrate_key = "12@qiqi";
+const JWT_SECRET =process.env.JWT_SECRET || "12@qiqi";
+
 
 // ROUTE 1 : Creating a User Using : POST "api/auth/createduser" , No login required
 router.post(
@@ -24,7 +26,7 @@ router.post(
     try {
       let result = validationResult(req);
       if (!result.isEmpty()) {
-        return res.status(400).send({succes:false},"validation err");
+        return res.status(400).send({succes:false,message:result});
       }
       // Check weather the user with this email already exists
       let user = await User.findOne({ email: req.body.email });
@@ -37,7 +39,7 @@ router.post(
       const secPass = await bcrypt.hash(req.body.password, salt);
 
       let data = { name: req.body.name };
-      const authToken = jwt.sign(data, Secrate_key);
+      const authToken = jwt.sign(data,JWT_SECRET);
       // Create a new user
       User.create({
         name: req.body.name,
@@ -47,10 +49,11 @@ router.post(
       return res.status(200).send({succes:true,authToken});
     } catch (error) {
       console.error(error.message);
-      res.status(500).send({succes:false},"Internal server error");
+      res.status(500).send({succes:false,error:"Internal server error"});
     }
   }
 );
+
 
 // ROUTE2 : Authenticate a User using : POST "api/auth/login" , No login required
 router.post(
@@ -76,7 +79,7 @@ router.post(
           return res.status(400).json({ error: "user not found " });
 
         const data = { user: { id: user.id } };
-        const authToken = jwt.sign(data, Secrate_key);
+        const authToken = jwt.sign(data, JWT_SECRET);
         res.status(200).send({succes:true,authToken});
       }
     } catch (error) {
@@ -85,6 +88,7 @@ router.post(
     }
   }
 );
+
 
 // ROUTE2 : Get loggedin a User details using : POST "api/auth/getuser" , login required
 router.post("/getuser", fetchuser, async (req, res) => {
@@ -97,5 +101,6 @@ router.post("/getuser", fetchuser, async (req, res) => {
     res.status(500).send("Internal server error");
   }
 });
+
 
 module.exports = router;

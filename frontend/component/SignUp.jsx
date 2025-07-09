@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function SignUp({showAlert}) {
+export default function SignUp({ showAlert }) {
+  const host = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
@@ -11,7 +12,7 @@ export default function SignUp({showAlert}) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch(`http://localhost:5000/api/auth/createduser`, {
+    const response = await fetch(`${host}/api/auth/createduser`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -22,10 +23,10 @@ export default function SignUp({showAlert}) {
     if (result.succes) {
       localStorage.setItem("token", result.authToken);
       setFormData({ name: "", email: "", password: "" });
-      showAlert("Created Account Successfully",'success');
+      showAlert("Created Account Successfully", "success");
       navigate("/");
     } else {
-      showAlert("user with this email already exist",'danger');
+      showAlert("user with this email already exist", "danger");
       setFormData({ name: "", email: "", password: "" });
     }
   };

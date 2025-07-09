@@ -16,7 +16,7 @@ export default function NoteItem({ note, updateNote, showAlert }) {
       <div
         className="card shadow-sm h-100 border-0"
         style={{
-          backgroundColor: "#f8f9fa", // soft light gray
+          backgroundColor: "#f8f9fa", 
           borderRadius: "10px",
           padding: "16px",
         }}
