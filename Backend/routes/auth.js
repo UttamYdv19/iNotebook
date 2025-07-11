@@ -29,8 +29,8 @@ router.post(
         return res.status(400).send({succes:false,message:result});
       }
       // Check weather the user with this email already exists
-      let user = await User.findOne({ email: req.body.email });
-      if (user) {
+      let check = await User.findOne({ email: req.body.email });
+      if (check) {
         return res
           .status(400)
           .send({succes:false, error: "user with this email is already existed" });
@@ -38,14 +38,14 @@ router.post(
       const salt = await bcrypt.genSalt(10);
       const secPass = await bcrypt.hash(req.body.password, salt);
 
-      let data = { id:user._id };
-      const authToken = jwt.sign(data,JWT_SECRET);
       // Create a new user
-      User.create({
+      const user  = User.create({
         name: req.body.name,
         email: req.body.email,
         password: secPass,
       });
+      let data = { id:user._id };
+      const authToken = jwt.sign(data,JWT_SECRET);
       return res.status(200).send({succes:true,authToken});
     } catch (error) {
       console.error(error.message);
