@@ -44,7 +44,7 @@ router.post(
         email: req.body.email,
         password: secPass,
       });
-      let data = { id:user._id };
+      let data = { id:user.id };
       const authToken = jwt.sign(data,JWT_SECRET);
       return res.status(200).send({succes:true,authToken});
     } catch (error) {
