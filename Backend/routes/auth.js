@@ -38,7 +38,7 @@ router.post(
       const salt = await bcrypt.genSalt(10);
       const secPass = await bcrypt.hash(req.body.password, salt);
 
-      let data = { name: req.body.name };
+      let data = { id:user._id };
       const authToken = jwt.sign(data,JWT_SECRET);
       // Create a new user
       User.create({
@@ -74,7 +74,7 @@ router.post(
       if (!user)
         return res.status(400).json({ error: "user not found signUp first!!" });
       else {
-        const validPass = await bcrypt.compare(password, user.password);
+        const validPass = bcrypt.compare(password, user.password);
         if (!validPass)
           return res.status(400).json({ error: "user not found " });
 
